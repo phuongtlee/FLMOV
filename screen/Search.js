@@ -77,18 +77,16 @@ export default function Search({navigation}) {
           onChangeText={setKeyword}
         />
       </View>
-      <View style={{flex: 1}}>
-        <FlatList
-          contentContainerStyle={styles.flatListContainer}
-          data={searchResult}
-          numColumns={numColumns}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderItem}
-          onEndReachedThreshold={0.5}
-          refreshing={isRefreshing}
-          onRefresh={refreshList}
-        />
-      </View>
+      <FlatList
+        contentContainerStyle={styles.flatListContainer}
+        data={searchResult}
+        numColumns={numColumns}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={renderItem}
+        onEndReachedThreshold={0.5}
+        refreshing={isRefreshing}
+        onRefresh={refreshList}
+      />
     </View>
   );
 }
@@ -114,7 +112,7 @@ const styles = StyleSheet.create({
   },
   flatListContainer: {
     // flex: 1,
-    marginTop: 5,
+    marginTop: 10,
   },
   poster: {
     // marginBottom: 10,
