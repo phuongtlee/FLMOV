@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  ScrollView,
 } from 'react-native';
 import {ActivityIndicator, Button, Text} from 'react-native-paper';
 import Slideshow from 'react-native-image-slider-show';
@@ -175,196 +174,216 @@ export default function Home({navigation}) {
   }
 
   return (
-    <ScrollView
-      style={{
-        flex: 1,
-        backgroundColor: '#000',
-      }}
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}>
-      <Slideshow
-        dataSource={dataSlide}
-        height={200}
-        indicatorSize={8}
-        arrowSize={20}
-        overlay={true}
-        containerStyle={{marginBottom: 10}}
-        titleStyle={{textAlign: 'center', color: 'white', fontSize: 16}}
-        onIndexChanged={handleSlideChange}
-        scrollEnabled={false}
-        onPress={slide => {
-          if (slide && slide.image && slide.image.slug) {
-            navigation.navigate(
-              'FilmDetail',
-              {slug: slide.image.slug},
-              console.log(slide.image.slug),
+    <FlatList
+      contentContainerStyle={styles.container}
+      data={[
+        {key: 'slideshow'},
+        {key: 'cinema'},
+        {key: 'tvseries'},
+        {key: 'tvshow'},
+        {key: 'cartoon'},
+        {key: 'newfilm'},
+      ]}
+      renderItem={({item}) => {
+        switch (item.key) {
+          case 'slideshow':
+            return (
+              <Slideshow
+                dataSource={dataSlide}
+                height={200}
+                indicatorSize={8}
+                arrowSize={20}
+                overlay={true}
+                containerStyle={{marginBottom: 10}}
+                titleStyle={{textAlign: 'center', color: 'white', fontSize: 16}}
+                onIndexChanged={handleSlideChange}
+                scrollEnabled={false}
+                onPress={slide => {
+                  if (slide && slide.image && slide.image.slug) {
+                    navigation.navigate(
+                      'FilmDetail',
+                      {slug: slide.image.slug},
+                      console.log(slide.image.slug),
+                    );
+                  } else {
+                    console.error('Slug not found in slide:', slide);
+                  }
+                }}
+              />
             );
-          } else {
-            console.error('Slug not found in slide:', slide);
-          }
-        }}
-      />
-
-      <View style={{margin: 5}}>
-        <View style={{marginBottom: 10}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              padding: 10,
-            }}>
-            <Text style={styles.txtTitle}>Phim lẻ</Text>
-          </View>
-          <FlatList
-            horizontal
-            contentContainerStyle={{marginBottom: 10}}
-            data={dataCinema}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={renderItemCinema}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-          />
-          <Button
-            style={styles.btnMore}
-            textColor="#fff"
-            onPress={() => navigation.navigate('Cinema')}>
-            Xem thêm...
-          </Button>
-        </View>
-
-        <View style={{marginBottom: 10}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              padding: 10,
-            }}>
-            <Text style={styles.txtTitle}>Phim bộ</Text>
-          </View>
-          <FlatList
-            horizontal
-            contentContainerStyle={{
-              marginBottom: 10,
-              justifyContent: 'space-between',
-              padding: 10,
-            }}
-            data={dataTVseries}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={renderItemCinema}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-          />
-          <Button
-            style={styles.btnMore}
-            textColor="#fff"
-            onPress={() => navigation.navigate('TVseries')}>
-            Xem thêm...
-          </Button>
-        </View>
-
-        <View style={{marginBottom: 10}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              padding: 10,
-            }}>
-            <Text style={styles.txtTitle}>TVShow</Text>
-          </View>
-          <FlatList
-            horizontal
-            contentContainerStyle={{marginBottom: 10}}
-            data={dataTVshow}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={renderItemCinema}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-          />
-          <Button
-            style={styles.btnMore}
-            textColor="#fff"
-            onPress={() => navigation.navigate('TVShow')}>
-            Xem thêm...
-          </Button>
-        </View>
-
-        <View style={{marginBottom: 10}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              padding: 10,
-            }}>
-            <Text style={styles.txtTitle}>Animation</Text>
-          </View>
-          <FlatList
-            horizontal
-            contentContainerStyle={{marginBottom: 10}}
-            data={dataCartoon}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={renderItemCinema}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-          />
-          <Button
-            style={styles.btnMore}
-            textColor="#fff"
-            onPress={() => navigation.navigate('Cartoon')}>
-            Xem thêm...
-          </Button>
-        </View>
-
-        <View style={{marginBottom: 10}}>
-          <View>
-            <Text style={styles.txtTitle}>Phim mới</Text>
-          </View>
-          <FlatList
-            contentContainerStyle={styles.flatlst}
-            data={data}
-            numColumns={numColumns}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={renderItem}
-          />
-          <Button
-            style={styles.btnMore}
-            textColor="#fff"
-            onPress={() => navigation.navigate('NewFilm')}>
-            Xem thêm...
-          </Button>
-        </View>
-      </View>
-    </ScrollView>
+          case 'cinema':
+            return (
+              <View style={{margin: 5, marginBottom: 10}}>
+                <View style={{marginBottom: 10}}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      padding: 10,
+                    }}>
+                    <Text style={styles.txtTitle}>Phim lẻ</Text>
+                  </View>
+                  <FlatList
+                    horizontal
+                    contentContainerStyle={{marginBottom: 10}}
+                    data={dataCinema}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={renderItemCinema}
+                    showsHorizontalScrollIndicator={false}
+                  />
+                  <Button
+                    style={styles.btnMore}
+                    textColor="#fff"
+                    onPress={() => navigation.navigate('Cinema')}>
+                    Xem thêm...
+                  </Button>
+                </View>
+              </View>
+            );
+          case 'tvseries':
+            return (
+              <View style={{margin: 5, marginBottom: 10}}>
+                <View style={{marginBottom: 10}}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      padding: 10,
+                    }}>
+                    <Text style={styles.txtTitle}>Phim bộ</Text>
+                  </View>
+                  <FlatList
+                    horizontal
+                    contentContainerStyle={{marginBottom: 10}}
+                    data={dataTVseries}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={renderItemCinema}
+                    showsHorizontalScrollIndicator={false}
+                  />
+                  <Button
+                    style={styles.btnMore}
+                    textColor="#fff"
+                    onPress={() => navigation.navigate('TVseries')}>
+                    Xem thêm...
+                  </Button>
+                </View>
+              </View>
+            );
+          case 'tvshow':
+            return (
+              <View style={{margin: 5, marginBottom: 10}}>
+                <View style={{marginBottom: 10}}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      padding: 10,
+                    }}>
+                    <Text style={styles.txtTitle}>TVShow</Text>
+                  </View>
+                  <FlatList
+                    horizontal
+                    contentContainerStyle={{marginBottom: 10}}
+                    data={dataTVshow}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={renderItemCinema}
+                    showsHorizontalScrollIndicator={false}
+                  />
+                  <Button
+                    style={styles.btnMore}
+                    textColor="#fff"
+                    onPress={() => navigation.navigate('TVShow')}>
+                    Xem thêm...
+                  </Button>
+                </View>
+              </View>
+            );
+          case 'cartoon':
+            return (
+              <View style={{margin: 5, marginBottom: 10}}>
+                <View style={{marginBottom: 10}}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      padding: 10,
+                    }}>
+                    <Text style={styles.txtTitle}>Animation</Text>
+                  </View>
+                  <FlatList
+                    horizontal
+                    contentContainerStyle={{marginBottom: 10}}
+                    data={dataCartoon}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={renderItemCinema}
+                    showsHorizontalScrollIndicator={false}
+                  />
+                  <Button
+                    style={styles.btnMore}
+                    textColor="#fff"
+                    onPress={() => navigation.navigate('Cartoon')}>
+                    Xem thêm...
+                  </Button>
+                </View>
+              </View>
+            );
+          case 'newfilm':
+            return (
+              <View style={{margin: 5, marginBottom: 10}}>
+                <View>
+                  <Text style={styles.txtTitle}>Phim mới</Text>
+                </View>
+                <FlatList
+                  contentContainerStyle={styles.flatlst}
+                  data={data}
+                  numColumns={numColumns}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={renderItem}
+                  showsVerticalScrollIndicator={false}
+                />
+                <Button
+                  style={styles.btnMore}
+                  textColor="#fff"
+                  onPress={() => navigation.navigate('NewFilm')}>
+                  Xem thêm...
+                </Button>
+              </View>
+            );
+          default:
+            return null;
+        }
+      }}
+      keyExtractor={(item, index) => index.toString()}
+      showsVerticalScrollIndicator={false}
+    />
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    backgroundColor: '#000',
+  },
   flatlst: {
     flex: 1,
-    // alignItems: 'center',
   },
   poster: {
-    // marginBottom: 10,
     resizeMode: 'center',
     height: 150,
     width: 150,
     borderRadius: 10,
   },
-
   txt: {
     marginLeft: 5,
     fontWeight: 'bold',
     fontSize: 15,
     color: '#fff',
   },
-
   txtTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 10,
   },
-
-  btnMore: {
-    // fontSize: 120,
-  },
+  btnMore: {},
 });
